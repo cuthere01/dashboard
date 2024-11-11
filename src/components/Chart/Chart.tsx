@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import ReactEcharts from "echarts-for-react";
 import * as echarts from "echarts";
 import styles from "./Chart.module.css";
+import { IGraph, INode, ILink } from "@/src/interfaces/graph.interface";
+import { IData } from "@/src/interfaces/data.interface";
 
 const Chart: React.FC = (): JSX.Element => {
     const [option, setOption] = useState<echarts.EChartsOption | null>(null);
@@ -10,91 +12,70 @@ const Chart: React.FC = (): JSX.Element => {
         const fetchData = async () => {
             try {
                 const response = await fetch("/data.json");
-                const input = await response.json();
+                const data = await response.json();
 
-                const nodes = [];
-                const links = [];
+                const nodes: INode[] = [];
+                const links: ILink[] = [];
                 const uniqueSkills = new Map();
                 let idCounter = 0;
 
-                input.forEach((profession) => {
+                data.forEach((profession: IData) => {
                     const professionNode = {
-                        id: idCounter++,
+                        id: String(idCounter++),
                         name: profession.name,
                         category: 0,
+                        itemStyle: { color: "#ADADAD" },
                     };
                     nodes.push(professionNode);
 
-                    profession.mainSkills.forEach((skill) => {
-                        if (!uniqueSkills.has(skill)) {
-                            uniqueSkills.set(skill, idCounter);
-                            nodes.push({
-                                id: idCounter++,
-                                name: skill,
-                                category: 1,
+                    const addChild = (type: number): void => {
+                        (type === 1 ? profession.mainSkills : profession.otherSkills).forEach((skill) => {
+                            if (!uniqueSkills.has(skill)) {
+                                uniqueSkills.set(skill, idCounter);
+                                nodes.push({
+                                    id: String(idCounter++),
+                                    name: skill,
+                                    category: type,
+                                    itemStyle: { color: "#FFD4AD" },
+                                });
+                            }
+                            links.push({
+                                source: professionNode.id,
+                                target: uniqueSkills.get(skill),
+                                lineStyle: { color: "#ADADAD" },
                             });
-                        }
-                        links.push({
-                            source: professionNode.id,
-                            target: uniqueSkills.get(skill),
                         });
-                    });
+                    }
 
-                    profession.otherSkills.forEach((skill) => {
-                        if (!uniqueSkills.has(skill)) {
-                            uniqueSkills.set(skill, idCounter);
-                            nodes.push({
-                                id: idCounter++,
-                                name: skill,
-                                category: 2,
-                            });
-                        }
-                        links.push({
-                            source: professionNode.id,
-                            target: uniqueSkills.get(skill),
-                        });
-                    });
+                    addChild(1);
+                    addChild(2);
                 });
 
                 // Результат
-                const data = { nodes, links };
-                console.log(JSON.stringify(data, null, 2));
+                const graph: IGraph = { nodes, links };
+                //console.log(JSON.stringify(graph, null, 2));
 
-                
-                const radiusInner = 100;
-                const radiusOuter = 200;
-                const parents = data.nodes.filter(node => node.category === 0);
-                const childrens = data.nodes.filter(node => node.category !== 0);
+                const radiusInner = 125;
+                const radiusOuter = 250;
+                const parents = graph.nodes.filter(
+                    (node) => node.category === 0
+                );
+                const childrens = graph.nodes.filter(
+                    (node) => node.category !== 0
+                );
 
-                const calcCoord = (nodes: any, radius: number): void => {
-                    nodes.forEach((node: any, index: number) => {
+                const calcCoord = (nodes: INode[], radius: number): void => {
+                    nodes.forEach((node, index: number) => {
                         const angle = (index / nodes.length) * 2 * Math.PI;
-                        node.x = Math.cos(angle) * radius;
-                        node.y = Math.sin(angle) * radius;
+                        node.x = Math.sin(angle) * radius;
+                        node.y = -Math.cos(angle) * radius;
                     });
-                }
+                };
 
                 calcCoord(parents, radiusInner);
                 calcCoord(childrens, radiusOuter);
 
-
-                data.nodes.forEach((node: any, index: number) => {
-                    if (node.category === undefined) {
-                        console.warn("У узла отсутствует категория:", node);
-                        node.category = -1; 
-                    }
-                    if (node.category === 0) {
-                        node.radius = radiusInner;
-                        node.itemStyle = "green";
-
-                    } else if (node.category === 1 || node.category === 2) {
-                        node.radius = radiusOuter;
-                        node.itemStyle = "orange";
-                    } else {
-                        node.radius = radiusOuter;
-                        node.itemStyle = "orange";
-                    }
-                });
+            
 
                 setOption({
                     tooltip: {},
@@ -105,33 +86,39 @@ const Chart: React.FC = (): JSX.Element => {
                             type: "graph",
                             layout: "none",
                             roam: true,
-                            edgeSymbol: ["circle", "line"],
+                            
                             edgeSymbolSize: [4, 10],
                             symbolSize: 30,
-                            data: data.nodes, 
-                            links: data.links, 
+                            data: graph.nodes,
+                            links: graph.links,
                             categories: [
                                 { name: "Профессии" },
                                 { name: "Основные навыки" },
                                 { name: "Дополнительные навыки" },
                             ],
                             force: {
-                                repulsion: 400, 
-                                gravity: 0.1, 
+                                repulsion: 400,
+                                gravity: 0.1,
+                            },
+                            lineStyle: {
+                                opacity: 0.5, // Линии по умолчанию невидимы
+                                curveness: 0.5, // Закругленность линий; подберите значение по желанию
+                            },
+                            label: {
+                                show: true,
+                                position: "top"
                             },
                             emphasis: {
                                 focus: "adjacency",
+                                itemStyle: {
+                                    color: "#00A372",
+                                },
                                 lineStyle: {
-                                    width: 4,
+                                    color: "#ADADAD",
+                                    opacity: 1, // Делает линии видимыми при наведении/выборе
                                 },
                             },
                             symbol: "circle",
-                            edgeLabel: {
-                                show: true,
-                                formatter: "{c}",
-                                fontSize: 14,
-                                color: "#aaa",
-                            },
                         },
                     ],
                 });

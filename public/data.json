@@ -6,7 +6,7 @@
     },
     {
         "name": "Предприниматель",
-        "mainSkills": ["1C", "Excel", "Power BI"],
+        "mainSkills": ["1С", "Excel", "Power BI"],
         "otherSkills": [
             "Google Analytics",
             "Яндекс.Метрика",
@@ -31,7 +31,7 @@
         "name": "Менеджер проекта",
         "mainSkills": [
             "Visio",
-            "1C",
+            "1С",
             "Google Analytics",
             "Яндекс.Метрика",
             "Python",
@@ -42,7 +42,7 @@
     },
     {
         "name": "Финансовый менеджер",
-        "mainSkills": ["1C", "Excel", "Power BI"],
+        "mainSkills": ["1С", "Excel", "Power BI"],
         "otherSkills": ["BPMN"]
     },
     {
