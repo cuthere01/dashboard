@@ -1,0 +1,489 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "Финансовый аналитик",
+            "category": 0
+        },
+        {
+            "id": 1,
+            "name": "Excel",
+            "category": 1
+        },
+        {
+            "id": 2,
+            "name": "SQL",
+            "category": 1
+        },
+        {
+            "id": 3,
+            "name": "VBA",
+            "category": 1
+        },
+        {
+            "id": 4,
+            "name": "1С",
+            "category": 1
+        },
+        {
+            "id": 5,
+            "name": "Power BI",
+            "category": 2
+        },
+        {
+            "id": 6,
+            "name": "Python",
+            "category": 2
+        },
+        {
+            "id": 7,
+            "name": "Предприниматель",
+            "category": 0
+        },
+        {
+            "id": 8,
+            "name": "1C",
+            "category": 1
+        },
+        {
+            "id": 9,
+            "name": "Google Analytics",
+            "category": 2
+        },
+        {
+            "id": 10,
+            "name": "Яндекс.Метрика",
+            "category": 2
+        },
+        {
+            "id": 11,
+            "name": "Tilda",
+            "category": 2
+        },
+        {
+            "id": 12,
+            "name": "Продуктовый дизайнер",
+            "category": 0
+        },
+        {
+            "id": 13,
+            "name": "Figma",
+            "category": 1
+        },
+        {
+            "id": 14,
+            "name": "Sketch",
+            "category": 1
+        },
+        {
+            "id": 15,
+            "name": "Illustrator",
+            "category": 1
+        },
+        {
+            "id": 16,
+            "name": "Photoshop",
+            "category": 1
+        },
+        {
+            "id": 17,
+            "name": "Principle",
+            "category": 1
+        },
+        {
+            "id": 18,
+            "name": "Shopify",
+            "category": 2
+        },
+        {
+            "id": 19,
+            "name": "Protopie",
+            "category": 2
+        },
+        {
+            "id": 20,
+            "name": "Cinema 4D",
+            "category": 2
+        },
+        {
+            "id": 21,
+            "name": "Менеджер проекта",
+            "category": 0
+        },
+        {
+            "id": 22,
+            "name": "Visio",
+            "category": 1
+        },
+        {
+            "id": 23,
+            "name": "Финансовый менеджер",
+            "category": 0
+        },
+        {
+            "id": 24,
+            "name": "BPMN",
+            "category": 2
+        },
+        {
+            "id": 25,
+            "name": "Руководитель финансового департамента компании",
+            "category": 0
+        },
+        {
+            "id": 26,
+            "name": "HQL",
+            "category": 2
+        },
+        {
+            "id": 27,
+            "name": "Продуктовый аналитик",
+            "category": 0
+        },
+        {
+            "id": 28,
+            "name": "Tableau",
+            "category": 2
+        },
+        {
+            "id": 29,
+            "name": "R",
+            "category": 2
+        },
+        {
+            "id": 30,
+            "name": "Machine learning",
+            "category": 2
+        },
+        {
+            "id": 31,
+            "name": "Руководитель финансового продукта",
+            "category": 0
+        },
+        {
+            "id": 32,
+            "name": "Менеджер по маркетингу",
+            "category": 0
+        },
+        {
+            "id": 33,
+            "name": "Google Ads",
+            "category": 1
+        },
+        {
+            "id": 34,
+            "name": "Ahrefs",
+            "category": 1
+        },
+        {
+            "id": 35,
+            "name": "Главред",
+            "category": 1
+        },
+        {
+            "id": 36,
+            "name": "My Target",
+            "category": 1
+        },
+        {
+            "id": 37,
+            "name": "Xenu",
+            "category": 2
+        },
+        {
+            "id": 38,
+            "name": "Менеджер по цифровой трансформации",
+            "category": 0
+        }
+    ],
+    "links": [
+        {
+            "source": 0,
+            "target": 1
+        },
+        {
+            "source": 0,
+            "target": 2
+        },
+        {
+            "source": 0,
+            "target": 3
+        },
+        {
+            "source": 0,
+            "target": 4
+        },
+        {
+            "source": 0,
+            "target": 5
+        },
+        {
+            "source": 0,
+            "target": 6
+        },
+        {
+            "source": 7,
+            "target": 8
+        },
+        {
+            "source": 7,
+            "target": 1
+        },
+        {
+            "source": 7,
+            "target": 5
+        },
+        {
+            "source": 7,
+            "target": 9
+        },
+        {
+            "source": 7,
+            "target": 10
+        },
+        {
+            "source": 7,
+            "target": 6
+        },
+        {
+            "source": 7,
+            "target": 2
+        },
+        {
+            "source": 7,
+            "target": 11
+        },
+        {
+            "source": 12,
+            "target": 13
+        },
+        {
+            "source": 12,
+            "target": 14
+        },
+        {
+            "source": 12,
+            "target": 15
+        },
+        {
+            "source": 12,
+            "target": 16
+        },
+        {
+            "source": 12,
+            "target": 17
+        },
+        {
+            "source": 12,
+            "target": 11
+        },
+        {
+            "source": 12,
+            "target": 18
+        },
+        {
+            "source": 12,
+            "target": 19
+        },
+        {
+            "source": 12,
+            "target": 20
+        },
+        {
+            "source": 21,
+            "target": 22
+        },
+        {
+            "source": 21,
+            "target": 8
+        },
+        {
+            "source": 21,
+            "target": 9
+        },
+        {
+            "source": 21,
+            "target": 10
+        },
+        {
+            "source": 21,
+            "target": 6
+        },
+        {
+            "source": 21,
+            "target": 2
+        },
+        {
+            "source": 21,
+            "target": 11
+        },
+        {
+            "source": 21,
+            "target": 13
+        },
+        {
+            "source": 21,
+            "target": 14
+        },
+        {
+            "source": 21,
+            "target": 18
+        },
+        {
+            "source": 23,
+            "target": 8
+        },
+        {
+            "source": 23,
+            "target": 1
+        },
+        {
+            "source": 23,
+            "target": 5
+        },
+        {
+            "source": 23,
+            "target": 24
+        },
+        {
+            "source": 25,
+            "target": 14
+        },
+        {
+            "source": 25,
+            "target": 13
+        },
+        {
+            "source": 25,
+            "target": 18
+        },
+        {
+            "source": 25,
+            "target": 26
+        },
+        {
+            "source": 27,
+            "target": 9
+        },
+        {
+            "source": 27,
+            "target": 10
+        },
+        {
+            "source": 27,
+            "target": 2
+        },
+        {
+            "source": 27,
+            "target": 5
+        },
+        {
+            "source": 27,
+            "target": 6
+        },
+        {
+            "source": 27,
+            "target": 1
+        },
+        {
+            "source": 27,
+            "target": 26
+        },
+        {
+            "source": 27,
+            "target": 28
+        },
+        {
+            "source": 27,
+            "target": 29
+        },
+        {
+            "source": 27,
+            "target": 30
+        },
+        {
+            "source": 31,
+            "target": 22
+        },
+        {
+            "source": 31,
+            "target": 6
+        },
+        {
+            "source": 32,
+            "target": 9
+        },
+        {
+            "source": 32,
+            "target": 10
+        },
+        {
+            "source": 32,
+            "target": 33
+        },
+        {
+            "source": 32,
+            "target": 34
+        },
+        {
+            "source": 32,
+            "target": 35
+        },
+        {
+            "source": 32,
+            "target": 36
+        },
+        {
+            "source": 32,
+            "target": 11
+        },
+        {
+            "source": 32,
+            "target": 16
+        },
+        {
+            "source": 32,
+            "target": 37
+        },
+        {
+            "source": 32,
+            "target": 6
+        },
+        {
+            "source": 38,
+            "target": 22
+        },
+        {
+            "source": 38,
+            "target": 9
+        },
+        {
+            "source": 38,
+            "target": 10
+        },
+        {
+            "source": 38,
+            "target": 6
+        },
+        {
+            "source": 38,
+            "target": 2
+        },
+        {
+            "source": 38,
+            "target": 11
+        },
+        {
+            "source": 38,
+            "target": 13
+        },
+        {
+            "source": 38,
+            "target": 14
+        },
+        {
+            "source": 38,
+            "target": 18
+        }
+    ]
+}
