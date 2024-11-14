@@ -185,7 +185,6 @@ export const Chart: React.FC = (): JSX.Element => {
                 calcCoord(childrens, radiusOuter);
 
                 setOption({
-                    tooltip: {},
                     animationDurationUpdate: 1500,
                     animationEasingUpdate: "quinticInOut",
                     series: [
@@ -193,7 +192,6 @@ export const Chart: React.FC = (): JSX.Element => {
                             type: "graph",
                             layout: "none",
                             roam: true,
-                            edgeSymbolSize: [4, 10],
                             symbolSize: 30,
                             data: graph.nodes,
                             links: graph.links,
@@ -208,7 +206,7 @@ export const Chart: React.FC = (): JSX.Element => {
                             },
                             symbol: "circle",
                             lineStyle: {
-                                opacity: 0.5,
+                                opacity: 1,
                                 curveness: 0.3,
                             },
                             label: {
@@ -216,6 +214,16 @@ export const Chart: React.FC = (): JSX.Element => {
                                 position: "top",
                             },
                             selectedMode: "single",
+                            autoCurveness: true,
+                            emphasis: {
+                                itemStyle: {
+                                    // Убираем изменения стиля узлов при наведении
+                                    color: "inherit", // или любой другой цвет
+                                    borderColor: "inherit", // или любой другой цвет
+                                    borderWidth: 0,
+                                },
+                                scale: false
+                            },
                         },
                     ] as echarts.SeriesOption[],
                 });
