@@ -1,10 +1,13 @@
 import React from "react";
-import Chart from './components/Chart/Chart';
+
 import styles from './App.module.css'
+import { Chart } from './components';
+
 
 const App: React.FC = () => (
-    <div className={styles.container}>
+    <div className={styles.container} style={{display: 'flex'}}>
         <Chart />
+
     </div>
 );
 

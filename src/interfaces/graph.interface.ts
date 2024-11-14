@@ -1,16 +1,22 @@
-import { GraphEdgeItemOption, GraphNodeStateOption } from 'echarts/types/src/chart/graph/GraphSeries.js';
+import { GraphEdgeItemOption } from 'echarts/types/src/chart/graph/GraphSeries.js';
 
-export interface INode extends GraphNodeStateOption {
+export interface INode extends GraphEdgeItemOption {
     id: string;
     name: string;
-    category: number;
+    category?: number;
     x?: number;
     y?: number;
+    itemStyle?: {
+        color?: string;
+        borderWidth?: string | number;
+    };
+    select?: {};
 }
 
 export interface ILink extends GraphEdgeItemOption {
     source: string;
-    target: number;
+    target: string;
+    select?: {};
 }
 
 export interface IGraph {
