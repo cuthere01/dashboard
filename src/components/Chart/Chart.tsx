@@ -7,7 +7,9 @@ import { IData } from "@/src/interfaces/data.interface";
 import { CallbackDataParams } from "echarts/types/dist/shared";
 
 export const Chart: React.FC = (): JSX.Element => {
-    const [option, setOption] = useState<echarts.EChartsOption | null>(null);
+    const [option, setOption] = useState<echarts.EChartsOption | null>({
+        series: [] as echarts.SeriesOption[],
+    });
     const chartRef = useRef<echarts.ECharts | null>(null);
 
     const parseData = (data: IData[]) => {
@@ -72,11 +74,16 @@ export const Chart: React.FC = (): JSX.Element => {
         return { nodes, links };
     };
 
-    const handleNodeSelect = (params: any) => {
-        
+    const dataValidation = (params: echarts.ECElementEvent): boolean | any => {
+        console.log(option?.series);
+
+        if (params?.fromActionPayload.dataType !== "node") {
+            console.error("Выбран не узел", params);
+            return false;
+        }
         if (!params?.selected || params.selected.length === 0) {
             console.error("Нет выбранных узлов", params);
-            return;
+            return false;
         }
 
         const selectedNodeIndex = params.selected[0]?.dataIndex[0];
@@ -85,26 +92,34 @@ export const Chart: React.FC = (): JSX.Element => {
                 "Не удалось извлечь индекс выбранного узла:",
                 params.selected[0]
             );
-            return;
+            return false;
         }
 
-        
         const selectedNode = option?.series?.[0]?.data[selectedNodeIndex];
         if (!selectedNode) {
             console.error(
                 "Не удалось найти данные для выбранного узла:",
                 selectedNodeIndex
             );
-            return;
+            return false;
         }
+        console.log(selectedNode);
 
         const nodeId = selectedNode.id;
         if (!nodeId) {
             console.error("Выбранный узел не содержит id:", selectedNode);
+            return false;
+        }
+
+        return { selectedNodeIndex, nodeId };
+    };
+
+    const handleNodeSelect = (params: echarts.ECElementEvent) => {
+        if (!dataValidation(params)) {
             return;
         }
 
-        
+        const { selectedNodeIndex, nodeId } = dataValidation(params);
         const updatedLinks = option?.series?.[0]?.links.map((link: ILink) => {
             let newLinkStyle = link.lineStyle || {};
 
@@ -120,25 +135,22 @@ export const Chart: React.FC = (): JSX.Element => {
                     newLinkStyle = { ...newLinkStyle, color };
                 }
             } else {
-                
                 newLinkStyle = { ...newLinkStyle, color: "transparent" };
             }
 
             return { ...link, lineStyle: newLinkStyle };
         });
 
-        
         if (chartRef.current) {
             chartRef.current.setOption({
                 series: [
                     {
                         ...option?.series?.[0],
-                        links: updatedLinks, 
+                        links: updatedLinks,
                     },
                 ],
             });
 
-            
             chartRef.current.dispatchAction({
                 //type: "highlight",
                 seriesIndex: 0,
@@ -191,7 +203,8 @@ export const Chart: React.FC = (): JSX.Element => {
                         {
                             type: "graph",
                             layout: "none",
-                            roam: true,
+                            roam: false,
+                            //draggable: true,
                             symbolSize: 30,
                             data: graph.nodes,
                             links: graph.links,
@@ -208,6 +221,7 @@ export const Chart: React.FC = (): JSX.Element => {
                             lineStyle: {
                                 opacity: 1,
                                 curveness: 0.3,
+                                width: 2,
                             },
                             label: {
                                 show: true,
@@ -217,12 +231,11 @@ export const Chart: React.FC = (): JSX.Element => {
                             autoCurveness: true,
                             emphasis: {
                                 itemStyle: {
-                                    // Убираем изменения стиля узлов при наведении
-                                    color: "inherit", // или любой другой цвет
-                                    borderColor: "inherit", // или любой другой цвет
+                                    color: "inherit",
+                                    borderColor: "inherit", 
                                     borderWidth: 0,
                                 },
-                                scale: false
+                                scale: false,
                             },
                         },
                     ] as echarts.SeriesOption[],
@@ -244,10 +257,12 @@ export const Chart: React.FC = (): JSX.Element => {
                     notMerge={true}
                     lazyUpdate={true}
                     theme={"light"}
-                    onEvents={{ selectchanged: handleNodeSelect }}
+                    onEvents={{
+                        selectchanged: handleNodeSelect,
+                    }}
                     onChartReady={(echartsInstance) => {
                         chartRef.current = echartsInstance;
-                    }} // Устанавливаем экземпляр графика при готовности
+                    }}
                 />
             ) : (
                 <p>Загрузка графика...</p>
