@@ -75,8 +75,21 @@ export const Chart: React.FC = (): JSX.Element => {
     };
 
     const dataValidation = (params: echarts.ECElementEvent): boolean | any => {
-        console.log(option?.series);
+        if (!(option?.series && Array.isArray(option.series))) {
+            console.error("Не удалось валидировать данные", params);
+            return false;
+        }
 
+        const series = option.series[0] as echarts.SeriesOption & {
+            data: INode[];
+        };
+        if (!series.data || !Array.isArray(series.data)) {
+            console.error(
+                "Свойство 'data' не определено или не является массивом."
+            );
+            return false;
+        }
+        
         if (params?.fromActionPayload.dataType !== "node") {
             console.error("Выбран не узел", params);
             return false;
@@ -95,7 +108,7 @@ export const Chart: React.FC = (): JSX.Element => {
             return false;
         }
 
-        const selectedNode = option?.series?.[0]?.data[selectedNodeIndex];
+        const selectedNode = series.data[selectedNodeIndex];
         if (!selectedNode) {
             console.error(
                 "Не удалось найти данные для выбранного узла:",
@@ -103,28 +116,35 @@ export const Chart: React.FC = (): JSX.Element => {
             );
             return false;
         }
-        console.log(selectedNode);
-
+        //console.log(selectedNode);
         const nodeId = selectedNode.id;
-        if (!nodeId) {
-            console.error("Выбранный узел не содержит id:", selectedNode);
-            return false;
-        }
 
-        return { selectedNodeIndex, nodeId };
+        return { selectedNodeIndex, nodeId, series };
+    };
+
+    //написать код для пересчета координат при выборе узла, чтобы связанные узлы стали ближе
+    //есть идея выделить пул ближайших узлов и поменять из местами со связанными узлами
+    //далее просто пересчитать координаты для всех или только для измененных узлов
+    //полученный результат передать в стейт
+    const coordRecalculation = () => {
+        
     };
 
     const handleNodeSelect = (params: echarts.ECElementEvent) => {
-        if (!dataValidation(params)) {
+        const validParams = dataValidation(params);
+        if (!validParams) {
             return;
         }
 
-        const { selectedNodeIndex, nodeId } = dataValidation(params);
-        const updatedLinks = option?.series?.[0]?.links.map((link: ILink) => {
+        const { selectedNodeIndex, nodeId, series } = validParams;
+        //coordRecalculation(series);
+
+        
+        const updatedLinks = series?.links.map((link: ILink) => {
             let newLinkStyle = link.lineStyle || {};
 
             if (link.source === nodeId || link.target === nodeId) {
-                const targetNode = option?.series?.[0]?.data.find(
+                const targetNode = series?.data.find(
                     (node: INode) =>
                         node.id === link.target || node.id === link.source
                 ) as INode;
@@ -145,25 +165,25 @@ export const Chart: React.FC = (): JSX.Element => {
             chartRef.current.setOption({
                 series: [
                     {
-                        ...option?.series?.[0],
+                        ...series,
                         links: updatedLinks,
                     },
                 ],
             });
 
-            chartRef.current.dispatchAction({
-                //type: "highlight",
-                seriesIndex: 0,
-                dataIndex: selectedNodeIndex,
-            });
+            // chartRef.current.dispatchAction({
+            //     //type: "highlight",
+            //     seriesIndex: 0,
+            //     dataIndex: selectedNodeIndex,
+            // });
 
-            setTimeout(() => {
-                chartRef.current?.dispatchAction({
-                    //type: "downplay",
-                    seriesIndex: 0,
-                    dataIndex: selectedNodeIndex,
-                });
-            }, 0);
+            // setTimeout(() => {
+            //     chartRef.current?.dispatchAction({
+            //         //type: "downplay",
+            //         seriesIndex: 0,
+            //         dataIndex: selectedNodeIndex,
+            //     });
+            // }, 0);
         }
     };
 
@@ -172,11 +192,7 @@ export const Chart: React.FC = (): JSX.Element => {
             try {
                 const response = await fetch("/data.json");
                 const data = await response.json();
-
                 const graph: IGraph = parseData(data);
-
-                const radiusInner = 125;
-                const radiusOuter = 250;
 
                 const parents = graph.nodes.filter(
                     (node) => node.category === 0
@@ -193,8 +209,8 @@ export const Chart: React.FC = (): JSX.Element => {
                     });
                 };
 
-                calcCoord(parents, radiusInner);
-                calcCoord(childrens, radiusOuter);
+                calcCoord(parents, 125);
+                calcCoord(childrens, 250);
 
                 setOption({
                     animationDurationUpdate: 1500,
@@ -232,7 +248,7 @@ export const Chart: React.FC = (): JSX.Element => {
                             emphasis: {
                                 itemStyle: {
                                     color: "inherit",
-                                    borderColor: "inherit", 
+                                    borderColor: "inherit",
                                     borderWidth: 0,
                                 },
                                 scale: false,
